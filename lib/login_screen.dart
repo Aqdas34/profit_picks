@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'dart:convert'; // Added for jsonDecode
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -30,6 +31,23 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = false;
     });
     if (response.statusCode == 200 || response.statusCode == 202) {
+      // Parse the response to extract user id
+      try {
+        final Map<String, dynamic> data =
+            response.body.isNotEmpty
+                ? Map<String, dynamic>.from(jsonDecode(response.body))
+                : {};
+        final user = data['user'];
+        final userId = user != null ? user['id'] : null;
+        if (userId != null) {
+          print('Logged in user id: ' + userId.toString());
+          // Save userId to persistent storage
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setInt('user_id', userId);
+        }
+      } catch (e) {
+        print('Failed to parse user id: ' + e.toString());
+      }
       Navigator.pushReplacementNamed(
         context,
         '/success',

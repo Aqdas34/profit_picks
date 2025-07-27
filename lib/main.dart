@@ -4,6 +4,7 @@ import 'register_screen.dart';
 import 'otp_screen.dart';
 import 'final_register_screen.dart';
 import 'success_screen.dart';
+import 'upload_document_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/otp': (context) => const OtpScreen(),
         '/final_register': (context) => const FinalRegisterScreen(),
         '/success': (context) => const SuccessScreen(),
+        '/upload': (context) => const UploadDocumentScreen(),
       },
     );
   }

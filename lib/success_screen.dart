@@ -7,6 +7,9 @@ class SuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String message =
         ModalRoute.of(context)?.settings.arguments as String? ?? 'Success!';
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.pushReplacementNamed(context, '/upload');
+    });
     return Scaffold(
       appBar: AppBar(title: const Text('Success')),
       body: Center(

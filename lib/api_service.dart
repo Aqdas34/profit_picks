@@ -44,4 +44,41 @@ class ApiService {
     var streamedResponse = await request.send();
     return await http.Response.fromStream(streamedResponse);
   }
+
+  Future<http.Response> uploadDocument({
+    required int userId,
+    required String taxYear,
+    required String accountingPeriod,
+    required String name,
+    List<http.MultipartFile>? identityDocuments,
+    List<http.MultipartFile>? bankStatements,
+    List<http.MultipartFile>? incomeRecords,
+    List<http.MultipartFile>? expenseReceipts,
+    List<http.MultipartFile>? additionalDocuments,
+  }) async {
+    var uri = Uri.parse('$baseUrl/upload-document');
+    var request =
+        http.MultipartRequest('POST', uri)
+          ..fields['user_id'] = userId.toString()
+          ..fields['tax_year'] = taxYear
+          ..fields['accountingPeriod'] = accountingPeriod
+          ..fields['name'] = name;
+    if (identityDocuments != null) {
+      request.files.addAll(identityDocuments);
+    }
+    if (bankStatements != null) {
+      request.files.addAll(bankStatements);
+    }
+    if (incomeRecords != null) {
+      request.files.addAll(incomeRecords);
+    }
+    if (expenseReceipts != null) {
+      request.files.addAll(expenseReceipts);
+    }
+    if (additionalDocuments != null) {
+      request.files.addAll(additionalDocuments);
+    }
+    var streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
+  }
 }
